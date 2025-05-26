@@ -1,0 +1,118 @@
+.loader-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(44, 44, 44, 0.8);
+    z-index: 999;
+}
+.loader-icon{
+    font-size: 80px;
+    animation: spin 1s linear infinite;
+    color: #d2042d;
+}
+@keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    font-size: 1rem;
+}
+.navbar h2{
+    font-size: 30px;
+}
+.search-bar{
+    display: flex;
+    flex-grow: 1;
+    max-width: 650px;
+    margin: 0 20px;
+}
+.search-input{
+    flex-grow: 1;
+    padding: 10px;
+    border: 2px solid #d2042d;
+    border-right: none;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+    font-size: 14px;
+}
+.search-input::placeholder{
+    color: #ccc;
+}
+.search-btn{
+    background-color: #d2042d;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 20px 20px 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+.icons{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.icons .icon{
+    font-size: 35px;
+    cursor: pointer;
+}
+.cart-icon{
+    position: relative;
+    border: none;
+    background: transparent;
+}
+.cart-qty{
+    position: absolute;
+    bottom: 20px;
+    right: -5px;
+    background: red;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+}
+.profile-group{
+    position: relative;
+}
+.dropdown-menu{
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: -30px;
+    background: #fff;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    width: 130px;
+    font-size: 18px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.profile-group:hover .dropdown-menu{
+    display: block;
+}
+.dropdown-item{
+    color: gray;
+    cursor: pointer;
+    margin: 2px 0;
+}
+.dropdown-item:hover{
+    color: black;
+}
+
+.menu-options-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

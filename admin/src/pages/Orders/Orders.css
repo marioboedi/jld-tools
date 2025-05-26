@@ -1,0 +1,44 @@
+.order-container{
+    width: 100%;
+    overflow-x: auto;
+}
+.order-table{
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+.order-table th,
+.order-table td{
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.order-table th{
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+.order-status{
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+.pagination {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.pagination button {
+  margin: 0 0.25rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
