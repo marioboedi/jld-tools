@@ -13,7 +13,7 @@ orderRouter.post('/stripe', authUser, placeOrderStripe)
 
 orderRouter.post('/userorders', authUser, userOrders)
 
-orderRouter.post('verifyStripe', authUser, verifyStripe)
+orderRouter.post('/verifyStripe', authUser, verifyStripe)
 // /verifyStripe
 
 export default orderRouter
