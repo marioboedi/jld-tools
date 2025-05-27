@@ -50,6 +50,9 @@ export const categoryItem = [
         category_title: "Circular Saw",
     },
     {
+        category_title: "Hand Tools",
+    },
+    {
         category_title: "Others",
     },
   ]
