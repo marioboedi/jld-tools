@@ -46,6 +46,26 @@ const Orders = ({ token }) => {
     }
   }
 
+  const paymentStatusHandler = async (event, orderId) => {
+    try {
+      const newValue = event.target.value === "true"
+      const response = await axios.post(
+        backendUrl + "/api/order/payment-status",
+        { orderId, payment: newValue },
+        { headers: { token } }
+      )
+      if (response.data.success) {
+        await fecthAllOrders()
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to update payment status")
+    }
+  }
+
+
   useEffect(() => {
     fecthAllOrders()
   }, [token])
@@ -132,7 +152,17 @@ const Orders = ({ token }) => {
                 <td>{order.items.length}</td>
                 <td>{currency}{order.amount.toLocaleString("id-ID")}</td>
                 <td>{order.paymentMethod}</td>
-                <td>{order.payment ? "Done" : "Pending"}</td>
+                <td>
+                  <select
+                    onChange={(event) => paymentStatusHandler(event, order._id)}
+                    value={order.payment ? "true" : "false"}
+                    className="order-status"
+                  >
+                    <option value="false">Pending</option>
+                    <option value="true">Done</option>
+                  </select>
+                </td>
+
                 <td>{new Date(order.date).toLocaleString()}</td>
                 <td>
                   <select onChange={(event) => statusHandler(event, order._id)} value={order.status} className='order-status'>
@@ -148,6 +178,7 @@ const Orders = ({ token }) => {
           </tbody>
         </table>
 
+      </div>
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
@@ -159,7 +190,6 @@ const Orders = ({ token }) => {
             </button>
           ))}
         </div>
-      </div>
     </div>
   )
 }

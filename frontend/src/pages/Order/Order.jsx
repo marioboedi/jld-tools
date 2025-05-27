@@ -69,10 +69,15 @@ const Order = () => {
                 <div className="order-item-status-container">
                   <div className="order-item-status">
                     <p className="status-indicator"></p>
-                    <p>{item.status} </p>
+                    <p>Status: {item.status}</p>
                   </div>
-                  <button onClick={loadOrderData} className='track-order-btn'> Track Order</button>
+                  <div className="order-item-status">
+                    <p className="status-indicator"></p>
+                    <p>Payment: {item.payment ? "Done" : "Pending"}</p>
+                  </div>
+                  {/* <button onClick={loadOrderData} className='track-order-btn'>Track Order</button> */}
                 </div>
+
 
               </div>
             ))

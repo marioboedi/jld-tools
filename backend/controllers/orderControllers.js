@@ -247,4 +247,22 @@ const updateStatus = async (req,res)=> {
     
 }
 
-export {placeOrder,verifyStripe, placeOrderStripe, userOrders, updateStatus, allOrders}
+const updatePaymentStatus = async (req, res) => {
+  try {
+    const { orderId, payment } = req.body;
+
+    // Validasi tipe data boolean
+    if (typeof payment !== 'boolean') {
+      return res.status(400).json({ success: false, message: 'Invalid payment value (should be true/false)' });
+    }
+
+    await orderModel.findByIdAndUpdate(orderId, { payment });
+    res.json({ success: true, message: 'Payment status updated' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+export {placeOrder,verifyStripe, placeOrderStripe, userOrders, updateStatus, allOrders, updatePaymentStatus}
