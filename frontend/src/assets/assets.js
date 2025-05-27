@@ -49,6 +49,9 @@ export const categoryItem = [
     {
         category_title: "Circular Saw",
     },
+    {
+        category_title: "Others",
+    },
   ]
 
 export const assets = {

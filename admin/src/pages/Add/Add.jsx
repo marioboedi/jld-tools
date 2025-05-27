@@ -108,6 +108,7 @@ const Add = ({ token }) => {
                         <option value="Lawn Mover">Lawn Mover</option>
                         <option value="Lithium Electric Drill">Lithium Electric Drill</option>
                         <option value="Circular Saw">Circular Saw</option>
+                        <option value="Others">Others</option>
                     </select>
                 </div>
                 <div>
