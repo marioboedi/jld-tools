@@ -12,10 +12,12 @@ const ProductModal = ({ product, onClose, addToCart }) => {
                 objectFit: 'contain', // supaya gambar tetap proporsional dan tidak terpotong
                 borderRadius: '8px' 
             }} />
-        <h2>{product.name}</h2>
-        <p>{product.description || 'No description available.'}</p>
-        <p><strong>Price:</strong> Rp.{product.price}</p>
-        <button onClick={() => addToCart(product._id)}>Add to Cart</button>
+        <div className='product-detail'>
+          <h2>{product.name}</h2>
+          <p>{product.description || 'No description available.'}</p>
+          <p><strong>Price:</strong> Rp.{product.price.toLocaleString('id-ID')}</p>
+          <button onClick={() => addToCart(product._id)}>Add to Cart</button>
+        </div>
       </div>
     </div>
   )

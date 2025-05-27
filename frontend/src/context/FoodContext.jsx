@@ -10,7 +10,7 @@ export const FoodContext = createContext()
 
 const FoodContextProvider = ({children}) => {
 
-    const delivery_fee = 12;
+    const delivery_fee = 12000;
     const currency = 'Rp.'
     console.log(backendUrl);
 

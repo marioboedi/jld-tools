@@ -130,7 +130,7 @@ const Orders = ({ token }) => {
                 <td>{order.items.map((item, i) => <p key={i}>{item.name}</p>)}</td>
                 <td>{order.items.map((item, i) => <p key={i}>{item.quantity}</p>)}</td>
                 <td>{order.items.length}</td>
-                <td>{currency}{order.amount}</td>
+                <td>{currency}{order.amount.toLocaleString("id-ID")}</td>
                 <td>{order.paymentMethod}</td>
                 <td>{order.payment ? "Done" : "Pending"}</td>
                 <td>{new Date(order.date).toLocaleString()}</td>

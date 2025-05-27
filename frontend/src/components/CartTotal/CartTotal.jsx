@@ -16,7 +16,7 @@ const CartTotal = () => {
             <p>Subtotal</p>
             <p>
               {currency}
-              {getCartAmount()}
+              {getCartAmount().toLocaleString("id-ID")}
             </p>
           </div>
           <hr className="cart-divider" />
@@ -24,7 +24,7 @@ const CartTotal = () => {
             <p>Shipping Fee</p>
             <p>
               {currency}
-              {delivery_fee}
+              {delivery_fee.toLocaleString("id-ID")}
             </p>
           </div>
           <div className="cart-row cart-total">
@@ -33,7 +33,7 @@ const CartTotal = () => {
               {currency}
               {getCartAmount() === 0
                 ? "0"
-                : (getCartAmount() + delivery_fee)}
+                : (getCartAmount() + delivery_fee).toLocaleString("id-ID")}
             </b>
           </div>
         </div>
