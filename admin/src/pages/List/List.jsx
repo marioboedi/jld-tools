@@ -141,7 +141,7 @@ const List = ({ token }) => {
             <img src={item.image} alt="" className="product-image" />
             <p>{item.name}</p>
             <p>{item.category}</p>
-            <p>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price)}</p>
+            <p>{'Rp ' + item.price.toLocaleString('id-ID')}</p>
             <p>{item.stock ?? '-'}</p> {/* Menampilkan stok atau "-" jika tidak tersedia */}
 
             <div className="product-actions">
@@ -170,47 +170,83 @@ const List = ({ token }) => {
 
       {/* ==== FORM EDIT PRODUCT ==== */}
       {editProduct && (
-        <div className="edit-form-container">
-          <h3>Edit Product</h3>
-          <input
-            type="text"
-            value={editProduct.name}
-            onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
-            placeholder="Name"
-          />
-          <input
-            type="text"
-            value={editProduct.category}
-            onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
-            placeholder="Category"
-          />
-          <input
-            type="number"
-            value={editProduct.price}
-            onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
-            placeholder="Price"
-          />
-          <textarea
-            value={editProduct.description}
-            onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
-            placeholder="Description"
-          />
-          <input
-            type="file"
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, imageFile: e.target.files[0] })
-            }
-          />
-          <input
-            type="number"
-            value={editProduct.stock}
-            onChange={(e) => setEditProduct({ ...editProduct, stock: e.target.value })}
-            placeholder="Stock"
-          />
-          <button onClick={submitEditProduct}>Submit</button>
-          <button onClick={() => setEditProduct(null)}>Cancel</button>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <span
+              className="modal-close-button"
+              onClick={() => setEditProduct(null)}
+            >
+              &times;
+            </span>
+            <h2>Edit Product</h2>
+
+            <div className="form-group">
+              <label htmlFor="edit-name">Name</label>
+              <input
+                id="edit-name"
+                type="text"
+                value={editProduct.name}
+                onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-category">Category</label>
+              <input
+                id="edit-category"
+                type="text"
+                value={editProduct.category}
+                onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-price">Price</label>
+              <input
+                id="edit-price"
+                type="number"
+                value={editProduct.price}
+                onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-stock">Stock</label>
+              <input
+                id="edit-stock"
+                type="number"
+                value={editProduct.stock}
+                onChange={(e) => setEditProduct({ ...editProduct, stock: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-description">Description</label>
+              <textarea
+                id="edit-description"
+                value={editProduct.description}
+                onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-image">Image</label>
+              <input
+                id="edit-image"
+                type="file"
+                onChange={(e) => setEditProduct({ ...editProduct, imageFile: e.target.files[0] })}
+              />
+            </div>
+
+            <div className="modal-buttons">
+              <button className="submit-button" onClick={submitEditProduct}>Submit</button>
+              {/* <button className="cancel-button" onClick={() => setEditProduct(null)}>Cancel</button> */}
+            </div>
+          </div>
         </div>
       )}
+
+
     </div>
   )
 }
