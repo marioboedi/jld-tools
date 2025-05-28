@@ -122,6 +122,9 @@ const Orders = ({ token }) => {
         )}
       </div>
 
+      <p className="order-total">Total Orders: {sortedOrders.length}</p>
+
+
       <div className="order-container">
         <table className="order-table">
           <thead>

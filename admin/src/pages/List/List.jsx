@@ -126,6 +126,9 @@ const List = ({ token }) => {
         </select>
       </div>
 
+      <p className="product-count">Total Products: {filteredList.length}</p>
+
+
       <div className="product-list-container">
         <div className="product-table-title">
           <b>Image</b>
