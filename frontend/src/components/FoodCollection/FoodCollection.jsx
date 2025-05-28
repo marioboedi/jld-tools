@@ -94,7 +94,17 @@ const FoodCollection = () => {
                   <h3 onClick={() => openModal(product)} style={{ cursor: 'pointer' }}>{product.name}</h3>
                   <div className="price-add">
                     <p>Rp.{product.price.toLocaleString('id-ID')}</p>
-                    <button onClick={() => addToCart(product._id)}>Add To Cart</button>
+                    <button 
+                      onClick={() => addToCart(product._id)} 
+                      disabled={product.stock === 0}
+                      style={{ 
+                        backgroundColor: product.stock === 0 ? 'gray' : '', 
+                        cursor: product.stock === 0 ? 'not-allowed' : 'pointer' 
+                      }}
+                    >
+                      {product.stock === 0 ? 'Out of Stock' : 'Add To Cart'}
+                    </button>
+
                   </div>
                 </div>
               ))

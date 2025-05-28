@@ -11,6 +11,8 @@ const Add = ({ token }) => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("All"); // Stores the selected category, defaulting to "All"
+    const [stock, setStock] = useState(""); // Tambahkan ini
+
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();  // Prevents the default form submission behavior
@@ -22,6 +24,8 @@ const Add = ({ token }) => {
             formData.append("description", description);
             formData.append("price", price);
             formData.append("category", category);
+            formData.append("stock", stock); // Tambahkan ini
+
             if (image) formData.append("image", image);  // Add image only if selected
 
             // Send a POST request to add the product
@@ -37,6 +41,7 @@ const Add = ({ token }) => {
                 setDescription("");
                 setPrice("");
                 setImage(null);
+                setStock("");
             } else {
                 toast.error(response.data.message);
             }
@@ -120,6 +125,17 @@ const Add = ({ token }) => {
                         onChange={(e) => setPrice(e.target.value)}
                         value={price}
                         placeholder="30"
+                    />
+                </div>
+                <div>
+                    <p className="form-label">Product Stock</p>
+                    <input
+                    type="number"
+                    className="form-input stock-input"
+                    onChange={(e) => setStock(e.target.value)}
+                    value={stock}
+                    placeholder="10"
+                    required
                     />
                 </div>
             </div>

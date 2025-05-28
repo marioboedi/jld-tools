@@ -61,6 +61,14 @@ const placeOrder = async (req, res) => {
         const newOrder = new orderModel(orderData);
         await newOrder.save();
 
+        await Promise.all(items.map(async (item) => {
+          const product = await productModel.findById(item.itemId);
+          if (product) {
+            product.stock -= item.quantity;
+            await product.save();
+          }
+        }));
+
         // Clear the user's cart
         await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
@@ -181,6 +189,19 @@ const verifyStripe = async (req, res) => {
   try {
     if (success === 'true') {
       await orderModel.findByIdAndUpdate(orderId, { payment: true });
+
+      // Kurangi stok
+      const order = await orderModel.findById(orderId);
+      if (order && order.items) {
+        await Promise.all(order.items.map(async (item) => {
+          const product = await productModel.findById(item.itemId);
+          if (product) {
+            product.stock -= item.quantity;
+            await product.save();
+          }
+        }));
+      }
+
       await userModel.findByIdAndUpdate(userId, { cartData: {} });
       res.json({ success: true, message: 'Payment verified' });
     } else {

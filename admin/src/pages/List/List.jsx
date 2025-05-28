@@ -61,6 +61,8 @@ const List = ({ token }) => {
       formData.append('price', editProduct.price)
       formData.append('category', editProduct.category)
       formData.append('description', editProduct.description)
+      formData.append('stock', editProduct.stock);
+
 
       if (editProduct.imageFile) {
         formData.append('image', editProduct.imageFile)
@@ -130,6 +132,7 @@ const List = ({ token }) => {
           <b>Name</b>
           <b>Category</b>
           <b>Price</b>
+          <b>Stock</b>
           <b className="action-title">Action</b>
         </div>
 
@@ -139,6 +142,7 @@ const List = ({ token }) => {
             <p>{item.name}</p>
             <p>{item.category}</p>
             <p>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price)}</p>
+            <p>{item.stock ?? '-'}</p> {/* Menampilkan stok atau "-" jika tidak tersedia */}
 
             <div className="product-actions">
               <MdEdit onClick={() => handleEditProduct(item)} className="product-action" />
@@ -196,6 +200,12 @@ const List = ({ token }) => {
             onChange={(e) =>
               setEditProduct({ ...editProduct, imageFile: e.target.files[0] })
             }
+          />
+          <input
+            type="number"
+            value={editProduct.stock}
+            onChange={(e) => setEditProduct({ ...editProduct, stock: e.target.value })}
+            placeholder="Stock"
           />
           <button onClick={submitEditProduct}>Submit</button>
           <button onClick={() => setEditProduct(null)}>Cancel</button>

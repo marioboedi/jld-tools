@@ -3,7 +3,7 @@ import {v2 as cloudinary} from 'cloudinary'
 
 const addProduct = async(req,res) => {
     try {
-        const {name, price, description, category} = req.body
+        const {name, price, description, category, stock} = req.body
 
         const image = req.file;
         // let imageUrl = "";
@@ -22,7 +22,11 @@ const addProduct = async(req,res) => {
         let result = await cloudinary.uploader.upload(image.path, {resource_type: 'image'})
 
         const productData = {
-            name, description, category, price: Number(price),
+            name, 
+            description, 
+            category, 
+            price: Number(price),
+            stock: Number(stock),
             // image: imageUrl,
             image: result.secure_url,
             date: Date.now()
@@ -86,13 +90,14 @@ const singleProduct = async(req,res)=> {
 
 const updateProduct = async (req, res) => {
     try {
-        const { _id, name, description, category, price } = req.body;
+        const { _id, name, description, category, price, stock } = req.body;
 
         const updateData = {
             name,
             description,
             category,
             price: Number(price),
+            stock: Number(stock),
         };
 
         if (req.file) {

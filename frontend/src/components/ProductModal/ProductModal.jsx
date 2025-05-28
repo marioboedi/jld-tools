@@ -16,7 +16,15 @@ const ProductModal = ({ product, onClose, addToCart }) => {
           <h2>{product.name}</h2>
           <p>{product.description || 'No description available.'}</p>
           <p><strong>Price:</strong> Rp.{product.price.toLocaleString('id-ID')}</p>
-          <button onClick={() => addToCart(product._id)}>Add to Cart</button>
+          <p><strong>Stock:</strong> {product.stock > 0 ? product.stock : "Out of Stock"}</p>
+
+          <button
+            onClick={() => addToCart(product._id)}
+            disabled={product.stock === 0}
+            style={{ backgroundColor: product.stock === 0 ? 'gray' : '' }}
+          >
+            {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+          </button>
         </div>
       </div>
     </div>
