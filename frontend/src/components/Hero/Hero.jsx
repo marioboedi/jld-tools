@@ -14,7 +14,6 @@ const Hero = () => {
           <div className="hero_left">
             <h2>"Tools That Cut. Weld. Build."</h2>
             <h1>EQUIP<br />BUILD<br />ACHIEVE </h1>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere, iure quaerat? Nihil voluptate velit nobis dolores provident </p>
             <button>Explore Our Menu</button>
           </div>
           <div className="hero_right">
