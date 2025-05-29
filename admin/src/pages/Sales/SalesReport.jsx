@@ -4,6 +4,8 @@ import { Bar, Pie, Line } from "react-chartjs-2";
 import { toast } from "react-toastify";
 import { backendUrl } from "../../App";
 import "./SalesReport.css";
+import { Filler } from 'chart.js';
+
 
 import {
   Chart as ChartJS,
@@ -27,7 +29,8 @@ ChartJS.register(
   Legend,
   PointElement,
   LineElement,
-  LineController
+  LineController,
+  Filler,
 );
 
 const SalesReport = ({ token }) => {

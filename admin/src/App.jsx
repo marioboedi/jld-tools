@@ -6,14 +6,14 @@ import List from "./pages/List/List";
 import Orders from "./pages/Orders/Orders";
 import SalesReport from "./pages/Sales/SalesReport";
 import Login from "./components/Login/Login";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast as _toast } from "react-toastify";
 
 
 export const backendUrl = "http://localhost:4000"
 export const currency = "Rp."
 
 const App = () => {
-  const [token, setToken] = useState(localStorage.getItem('token' || ""));
+  const [token, setToken] = useState(localStorage.getItem('token') || "");
 
   useEffect(()=>{
     localStorage.setItem('token', token)
