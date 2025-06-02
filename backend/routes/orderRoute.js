@@ -1,7 +1,8 @@
 import express from 'express'
 import adminAuth from '../middleware/adminAuth.js'
 import authUser from '../middleware/auth.js'
-import {placeOrder,verifyStripe, placeOrderStripe, allOrders,userOrders, updateStatus, updatePaymentStatus} from '../controllers/orderControllers.js'
+import upload from '../middleware/multer.js'
+import {placeOrder,verifyStripe, placeOrderStripe, allOrders,userOrders, updateStatus, updatePaymentStatus, placeOrderBankTransfer} from '../controllers/orderControllers.js'
 
 const orderRouter = express.Router()
 
@@ -17,6 +18,14 @@ orderRouter.post('/verifyStripe', authUser, verifyStripe)
 // /verifyStripe
 
 orderRouter.post('/payment-status', adminAuth, updatePaymentStatus)
+
+orderRouter.post(
+  '/transfer',
+  upload.single("proofImage"), // Multer dulu
+  authUser,                    // Auth sesudah multer
+  placeOrderBankTransfer       // Handler
+);
+
 
 
 export default orderRouter

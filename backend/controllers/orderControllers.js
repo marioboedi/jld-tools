@@ -1,7 +1,9 @@
 import orderModel from '../models/orderModels.js';
 import userModel from '../models/userModels.js';
 import productModel from '../models/productModels.js';
-import Stripe from 'stripe'
+import Stripe from 'stripe';
+import { v2 as cloudinary } from 'cloudinary';
+
 
 //GATEWAY INITIALIZE
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -285,5 +287,76 @@ const updatePaymentStatus = async (req, res) => {
   }
 };
 
+export const placeOrderBankTransfer = async (req, res) => {
+  try {
+    const { address, amount } = req.body;
+    const userId = req.body?.userId ?? req.userId;
+    const proof = req.file;
+
+    if (!proof) {
+      return res.status(400).json({ success: false, message: "Proof image is required" });
+    }
+
+    const result = await cloudinary.uploader.upload(proof.path, { resource_type: "image" });
+
+    const userData = await userModel.findById(userId);
+    if (!userData) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const items = await Promise.all(
+      Object.entries(userData.cartData).map(async ([itemId, quantity]) => {
+        const product = await productModel.findById(itemId);
+
+        if (!product) {
+          throw new Error(`Product with ID ${itemId} not found`);
+        }
+
+        return {
+          itemId,
+          name: product.name,
+          image: product.image,
+          price: product.price,
+          quantity,
+        };
+      })
+    );
+
+    if (items.length === 0) {
+      return res.status(400).json({ success: false, message: "Cart is empty" });
+    }
+
+    const orderData = {
+      userId,
+      items,
+      amount,
+      address: JSON.parse(address),
+      paymentMethod: "Transfer Bank",
+      proofImage: result.secure_url,
+      payment: false,
+      date: Date.now()
+    };
+
+    const newOrder = new orderModel(orderData);
+    await newOrder.save();
+
+    // Kurangi stok produk sesuai jumlah yang dipesan
+    await Promise.all(items.map(async (item) => {
+      const product = await productModel.findById(item.itemId);
+      if (product) {
+        product.stock -= item.quantity;
+        await product.save();
+      }
+    }));
+
+    await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
+
+    res.json({ success: true, message: "Order placed with bank transfer", order: newOrder });
+  } catch (error) {
+    console.error("Bank transfer order error:", error);
+    res.status(500).json({ success: false, message: "Order failed" });
+  }
+};
 
 export {placeOrder,verifyStripe, placeOrderStripe, userOrders, updateStatus, allOrders, updatePaymentStatus}

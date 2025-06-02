@@ -4,17 +4,7 @@ import {v2 as cloudinary} from 'cloudinary'
 const addProduct = async(req,res) => {
     try {
         const {name, price, description, category, stock} = req.body
-
         const image = req.file;
-        // let imageUrl = "";
-
-        // if(image){
-        //     let result = await cloudinary.uploader.upload(image.path, {resource_type: 'image'})
-        //     imageUrl = result.secure_url
-        // } else{
-        //     imageUrl = "https://via.placeholder.com/150"
-        // }
-
         if(!image){
             return res.json({success:false, message: "Please upload an image"})
         }

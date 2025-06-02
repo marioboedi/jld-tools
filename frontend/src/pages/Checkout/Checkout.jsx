@@ -1,14 +1,17 @@
-import React, { useContext, useState } from 'react';
-import './Checkout.css';
-import stripe from '../../assets/stripe_logo.png';
-import CartTotal from '../../components/CartTotal/CartTotal';
-import { FoodContext } from '../../context/FoodContext';
-import axios from 'axios';
-import { backendUrl } from '../../App';
-import { toast } from 'react-toastify';
+import React, { useContext, useState } from "react";
+import "./Checkout.css";
+import stripe from "../../assets/stripe_logo.png";
+import CartTotal from "../../components/CartTotal/CartTotal";
+import { FoodContext } from "../../context/FoodContext";
+import axios from "axios";
+import { backendUrl } from "../../App";
+import { toast } from "react-toastify";
+import BankTransferModal from "../../components/BankTransferModal/BankTrasferModal";
 
 const Checkout = () => {
   const [method, setMethod] = useState("cod");
+  const [showBankModal, setShowBankModal] = useState(false);
+  const [proofFile, setProofFile] = useState(null);
 
   const {
     cartItems,
@@ -100,6 +103,33 @@ const Checkout = () => {
           break;
         }
 
+        case "Transfer Bank": {
+          if (!proofFile) return toast.error("Upload proof of payment");
+
+          const formDataBank = new FormData();
+          formDataBank.append("proofImage", proofFile);
+          formDataBank.append("items", JSON.stringify(orderItems));
+          formDataBank.append("amount", getCartAmount() + delivery_fee);
+          formDataBank.append("address", JSON.stringify(formData));
+
+          const res = await axios.post(
+            `${backendUrl}/api/order/transfer`,
+            formDataBank,
+            {
+              headers: { token, "Content-Type": "multipart/form-data" },
+            }
+          );
+
+          if (res.data.success) {
+            setCartItems({});
+            navigate("/orders");
+          } else {
+            toast.error(res.data.message);
+          }
+
+          break;
+        }
+
         default:
           toast.error("Invalid payment method selected.");
           break;
@@ -132,6 +162,17 @@ const Checkout = () => {
                 }`}
               >
                 <span className="payment-text">CASH ON DELIVERY</span>
+              </div>
+              <div
+                onClick={() => {
+                  setMethod("Transfer Bank");
+                  setShowBankModal(true);
+                }}
+                className={`payment-option ${
+                  method === "Transfer Bank" ? "selected" : ""
+                }`}
+              >
+                <span className="payment-text">BANK TRANSFER</span>
               </div>
             </div>
           </fieldset>
@@ -237,6 +278,13 @@ const Checkout = () => {
           </div>
         </div>
       </form>
+      {showBankModal && (
+        <BankTransferModal
+          onClose={() => setShowBankModal(false)}
+          onFileChange={(e) => setProofFile(e.target.files[0])}
+          onDone={() => setShowBankModal(false)} 
+        />
+      )}
     </div>
   );
 };
