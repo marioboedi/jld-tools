@@ -69,7 +69,7 @@ const Login = () => {
         <input type="email" onChange={(e)=> setEmail(e.target.value)} value={email} className='form-input' placeholder='Email' required/>
         <input type="password" onChange={(e)=> setPassword(e.target.value)} value={password} className='form-input' placeholder='Password' required/>
         <div className="form-footer">
-          <p className='fgt-paddword'>Forget Password ?</p>
+          {/* <p className='fgt-paddword'>Forget Password ?</p> */}
           {
             currentState === 'Login' ? (<p className='toggle-auth-state' onClick={()=> setCurrentState('Sign Up')}>Create Account</p>) :
              (<p className='toggle-auth-state' onClick={()=> setCurrentState('Login')}>Login Here </p>)
