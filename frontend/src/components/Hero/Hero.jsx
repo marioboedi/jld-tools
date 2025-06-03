@@ -5,6 +5,8 @@ import {FaShippingFast} from 'react-icons/fa'
 import {BiSupport} from 'react-icons/bi'
 import {MdPayment} from 'react-icons/md'
 import {FiSend} from 'react-icons/fi'
+import { FaWhatsapp } from 'react-icons/fa'
+
 
 const Hero = () => {
   return (
@@ -14,7 +16,16 @@ const Hero = () => {
           <div className="hero_left">
             <h2>"Tools That Cut. Weld. Build."</h2>
             <h1>EQUIP<br />BUILD<br />ACHIEVE </h1>
-            <button>Explore Our Menu</button>
+            <a 
+              href="https://wa.link/aobdev" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="whatsapp_button"
+            >
+              <FaWhatsapp style={{ marginRight: '8px', fontSize: '25px' }} />
+              Contact Us
+            </a>
+
           </div>
           <div className="hero_right">
             <img src={hero_img} alt="" className='hero-img' />

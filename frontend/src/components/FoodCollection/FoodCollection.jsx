@@ -16,6 +16,9 @@ const FoodCollection = () => {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const [searchQuery, setSearchQuery] = useState("")
+
+
   const openModal = (product) => {
     setSelectedProduct(product)
     setIsModalOpen(true)
@@ -27,11 +30,12 @@ const FoodCollection = () => {
   }
 
   // Filter produk berdasarkan kategori
-  const filteredProducts = products.filter(
-    (product) =>
-      category === "All" ||
-      category.trim().toLowerCase() === product.category.trim().toLowerCase()
-  )
+    const filteredProducts = products.filter((product) => {
+    const matchCategory = category === "All" || category.trim().toLowerCase() === product.category.trim().toLowerCase()
+    const matchSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchCategory && matchSearch
+  })
+
 
   // Hitung produk yang akan ditampilkan per halaman
   const indexOfLastProduct = currentPage * productsPerPage
@@ -66,6 +70,15 @@ const FoodCollection = () => {
         <h1 className='text_center'>Discover Our Product</h1>
         <hr className='divider'/>
       </div>
+
+      <div className="search_bar">
+          <input
+            type="text"
+            placeholder="Search product..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
 
       <div className='display_container'>
         <div className='category_section'>
