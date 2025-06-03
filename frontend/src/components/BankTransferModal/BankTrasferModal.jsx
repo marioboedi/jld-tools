@@ -16,7 +16,7 @@ const BankTransferModal = ({ onClose, onFileChange, onDone }) => {
             alt="BCA Logo"
           />
           <div>
-            <strong>BCA</strong> - 1234567890 (a.n. PT JLD Tools)
+            <strong>BCA</strong> - 5990602893 a.n. Claudya (JLD TOOLS INDONESIA)
           </div>
         </div>
 
