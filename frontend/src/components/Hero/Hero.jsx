@@ -1,19 +1,27 @@
-import React from 'react'
+import { useContext } from 'react';
+import { FoodContext } from '../../context/FoodContext';
 import './Hero.css'
 import hero_img from '../../assets/jld-gedung.png'
-import { FaShippingFast, FaWhatsapp } from 'react-icons/fa'
+import { FaShippingFast, FaWhatsapp, FaUserCircle } from 'react-icons/fa'
 import { BiSupport } from 'react-icons/bi'
 import { MdPayment } from 'react-icons/md'
 
 const Hero = () => {
+  const { userName } = useContext(FoodContext)
+
   return (
     <section className="hero">
+
+      <div className="user_badge">
+        <FaUserCircle className="user_icon" />
+        <span className="user_name">{userName ? userName.toUpperCase() : 'USER'}</span>
+      </div>
 
       <div className="hero_image_full">
         <img src={hero_img} alt="Hero" className="hero-img-full" />
       </div>
       <div className="hero_text">
-        <h2>"Tools That Cut. Weld. Build."</h2>
+
         <div className="hero_titles">
           <span>EQUIP</span>
           <span>-</span>

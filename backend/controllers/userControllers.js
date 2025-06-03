@@ -20,7 +20,7 @@ const loginUser = async (req,res)=> {
         const isMatch = await bcrypt.compare(password, user.password);
         if(isMatch){
             const token = createToken(user._id);
-            res.json({success:true, message: "Login succesful", token})
+            res.json({success:true, message: "Login succesful", token, name: user.name})
         }
         else{
             res.json({success:false, message: "Incorrect password"})
@@ -63,7 +63,7 @@ const registerUser = async(req,res) => {
         const user = await newUser.save()
 
         const token = createToken(user._id)
-        res.json({success:true, message: "Account created successfully", token})
+        res.json({success:true, message: "Account created successfully", token, name: user.name})
 
         
     } catch (error) {

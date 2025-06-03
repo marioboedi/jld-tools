@@ -18,6 +18,8 @@ const FoodContextProvider = ({children}) => {
     const [products, setProducts] = useState(product)
     const [cartItems, setCartItems] = useState({})
     const [token, setToken] = useState('')
+    const [userName, setUserName] = useState('')
+
     const navigate = useNavigate()
 
     const addToCart = async(itemId) => {
@@ -114,10 +116,14 @@ const FoodContextProvider = ({children}) => {
             setToken(localStorage.getItem('token'));
             getUserCart(localStorage.getItem('token'))
         }
+        if (localStorage.getItem('name')) {
+            setUserName(localStorage.getItem('name'))
+        }
+
     },[])
 
     return (
-        <FoodContext.Provider value={{products, cartItems,setCartItems,getUserCart, navigate, currency, getCartAmount, addToCart, delivery_fee, getCartCount, updateQuantity, token, setToken}}>
+        <FoodContext.Provider value={{products, cartItems,setCartItems,getUserCart, navigate, currency, getCartAmount, addToCart, delivery_fee, getCartCount, updateQuantity, token, setToken, userName, setUserName}}>
             {children}
         </FoodContext.Provider>
     )

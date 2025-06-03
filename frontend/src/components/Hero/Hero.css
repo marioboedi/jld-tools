@@ -1,10 +1,14 @@
 .hero {
+  position: relative;
   padding: 60px 40px;
   background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+    padding-top: 80px; /* sesuaikan dengan tinggi navbar + sedikit buffer */
+
+  
 }
 
 .hero_text {
@@ -71,6 +75,7 @@
 }
 
 .hero-img-full {
+  margin-top: 70px;
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -212,5 +217,51 @@
 
   .feature_card p {
     font-size: 13px;
+  }
+}
+
+.user_badge {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 8px 16px;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.user_icon {
+  font-size: 24px;
+  color: #d2042d;
+  margin-right: 8px;
+}
+
+.user_name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  text-transform: uppercase;
+}
+
+/* Untuk layar tablet dan ke bawah */
+@media (max-width: 1024px) {
+  .user_badge {
+    top: 20px;          /* posisi vertikal tetap atas */
+    left: 50%;          /* geser ke tengah horizontal */
+    transform: translateX(-50%);  /* offset supaya benar-benar di tengah */
+  }
+}
+
+/* Untuk layar mobile kecil */
+@media (max-width: 480px) {
+  .user_badge {
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 12px;  /* sesuaikan padding jika perlu */
+    font-size: 10px;    /* bisa kecilkan font untuk mobile */
   }
 }
