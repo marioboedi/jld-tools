@@ -9,6 +9,7 @@ const List = ({ token }) => {
   const [list, setList] = useState([])
   const [editProduct, setEditProduct] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const productsPerPage = 10
 
@@ -93,7 +94,10 @@ const List = ({ token }) => {
 
   // Filter category
   const uniqueCategories = ['All', ...new Set(list.map((item) => item.category))]
-  const filteredList = selectedCategory === 'All' ? list : list.filter((item) => item.category === selectedCategory)
+  const filteredList = list
+  .filter((item) => selectedCategory === 'All' || item.category === selectedCategory)
+  .filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+
 
   // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage
@@ -125,6 +129,21 @@ const List = ({ token }) => {
           ))}
         </select>
       </div>
+
+      <div className="search-container">
+        <label htmlFor="product-search">Search Product: </label>
+        <input
+          type="text"
+          id="product-search"
+          placeholder="Enter product name..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value)
+            setCurrentPage(1) // Reset ke halaman 1 saat pencarian berubah
+          }}
+        />
+      </div>
+
 
       <p className="product-count">Total Products: {filteredList.length}</p>
 

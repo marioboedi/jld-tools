@@ -15,6 +15,11 @@ const Orders = ({ token }) => {
   const [modalImageUrl, setModalImageUrl] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [filterPaymentMethod, setFilterPaymentMethod] = useState("");
+  const [filterPaymentStatus, setFilterPaymentStatus] = useState("");
+  const [filterDeliveryStatus, setFilterDeliveryStatus] = useState("");
+
+
   const openModal = (imageUrl) => {
     setModalImageUrl(imageUrl);
     setIsModalOpen(true);
@@ -85,16 +90,27 @@ const Orders = ({ token }) => {
 
   // Sort & filter
   const sortedOrders = [...orders]
-    .filter((order) => {
-      if (!selectedDate) return true;
-      const orderDate = new Date(order.date).toISOString().split("T")[0];
-      return orderDate === selectedDate;
-    })
-    .sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-    });
+  .filter((order) => {
+    const orderDate = new Date(order.date).toISOString().split("T")[0];
+    const matchDate = !selectedDate || orderDate === selectedDate;
+    const matchPaymentMethod = !filterPaymentMethod || order.paymentMethod === filterPaymentMethod;
+    const matchPaymentStatus =
+      filterPaymentStatus === ""
+        ? true
+        : order.payment.toString() === filterPaymentStatus;
+    const matchDeliveryStatus =
+      !filterDeliveryStatus || order.status === filterDeliveryStatus;
+
+    return (
+      matchDate && matchPaymentMethod && matchPaymentStatus && matchDeliveryStatus
+    );
+  })
+  .sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+  });
+
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
@@ -139,6 +155,55 @@ const Orders = ({ token }) => {
           </button>
         )}
       </div>
+
+      <div className="order-filter">
+        <label htmlFor="filter-payment-method">Payment Method:</label>
+        <select
+          id="filter-payment-method"
+          value={filterPaymentMethod}
+          onChange={(e) => {
+            setFilterPaymentMethod(e.target.value);
+            setCurrentPage(1);
+          }}
+        >
+          <option value="">All</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="COD">COD</option>
+          <option value="Stripe">STRIPE</option>
+        </select>
+
+        <label htmlFor="filter-payment-status" style={{ marginLeft: "1rem" }}>Payment Status:</label>
+        <select
+          id="filter-payment-status"
+          value={filterPaymentStatus}
+          onChange={(e) => {
+            setFilterPaymentStatus(e.target.value);
+            setCurrentPage(1);
+          }}
+        >
+          <option value="">All</option>
+          <option value="true">Done</option>
+          <option value="false">Pending</option>
+        </select>
+
+        <label htmlFor="filter-delivery-status" style={{ marginLeft: "1rem" }}>Delivery Status:</label>
+        <select
+          id="filter-delivery-status"
+          value={filterDeliveryStatus}
+          onChange={(e) => {
+            setFilterDeliveryStatus(e.target.value);
+            setCurrentPage(1);
+          }}
+        >
+          <option value="">All</option>
+          <option value="Order Placed">Order Placed</option>
+          <option value="Packing">Packing</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Out for Delivery">Out for Delivery</option>
+          <option value="Delivered">Delivered</option>
+        </select>
+      </div>
+
 
       <p className="order-total">Total Orders: {sortedOrders.length}</p>
 
