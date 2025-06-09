@@ -120,6 +120,21 @@ const FoodContextProvider = ({children}) => {
             setUserName(localStorage.getItem('name'))
         }
 
+        const storedToken = localStorage.getItem('token');
+        const storedName = localStorage.getItem('name');
+
+        if (storedToken) {
+            setToken(storedToken);
+            getUserCart(storedToken);
+        } else {
+            setToken('');
+            setUserName(''); // pastikan nama kosong saat tidak login
+        }
+
+        if (storedName) {
+            setUserName(storedName);
+        }
+
     },[])
 
     return (

@@ -5,14 +5,22 @@ import hero_img from '../../assets/jld-gedung.png'
 import { FaShippingFast, FaWhatsapp, FaUserCircle } from 'react-icons/fa'
 import { BiSupport } from 'react-icons/bi'
 import { MdPayment } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
-  const { userName } = useContext(FoodContext)
+  const { userName, token } = useContext(FoodContext)
+  const navigate = useNavigate();
+
+  const handleUserClick = () => {
+    if (!token) {
+      navigate('/login');
+    }
+  };
 
   return (
     <section className="hero">
 
-      <div className="user_badge">
+      <div className="user_badge" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
         <FaUserCircle className="user_icon" />
         <span className="user_name">{userName ? userName.toUpperCase() : 'USER'}</span>
       </div>
