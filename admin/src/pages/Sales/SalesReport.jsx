@@ -59,17 +59,18 @@ const SalesReport = ({ token }) => {
 
   const generateColors = (num) => {
     const colors = [
-      "rgba(255, 0, 0, 0.8)",
-      "rgba(220, 20, 60, 0.8)",
-      "rgba(255, 69, 58, 0.8)",
-      "rgba(255, 99, 132, 0.8)",
-      "rgba(200, 0, 0, 0.8)",
-      "rgba(178, 34, 34, 0.8)",
-      "rgba(255, 80, 80, 0.8)",
-      "rgba(255, 105, 97, 0.8)",
-      "rgba(255, 127, 127, 0.8)",
-      "rgba(255, 153, 153, 0.8)",
-    ];
+  "rgba(255, 0, 55, 0.8)",   // red
+  "rgba(0, 153, 255, 0.8)",   // blue
+  "rgba(255, 183, 0, 0.8)",   // yellow
+  "rgba(0, 255, 255, 0.8)",   // teal
+  "rgba(45, 0, 134, 0.8)",  // purple
+  "rgba(255, 128, 0, 0.8)",   // orange
+  "rgba(0, 160, 67, 0.8)",     // green
+  "rgba(207, 0, 207, 0.8)",    // magenta
+  "rgba(0, 206, 206, 0.8)",    // cyan
+  "rgba(240, 40, 40, 0.8)",  // grey
+];
+
     return Array.from({ length: num }, (_, i) => colors[i % colors.length]);
   };
 
