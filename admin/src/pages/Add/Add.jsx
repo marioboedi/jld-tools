@@ -10,7 +10,7 @@ const Add = ({ token }) => {
     const [name, setName] = useState("");  // Stores the product name
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
-    const [category, setCategory] = useState("All"); // Stores the selected category, defaulting to "All"
+    const [category, setCategory] = useState("Cordless Drill"); // Stores the selected category, defaulting to "All"
     const [stock, setStock] = useState(""); // Tambahkan ini
 
 
@@ -103,7 +103,6 @@ const Add = ({ token }) => {
                         value={category}
                         className="form-select"
                     >
-                        <option value="All">All</option>
                         <option value="Cordless Drill">Cordless Drill</option>
                         <option value="Impact Driver">Impact Driver</option>
                         <option value="Electric Hand Saw">Electric Hand Saw</option>
