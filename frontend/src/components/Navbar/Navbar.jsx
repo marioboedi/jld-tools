@@ -75,6 +75,7 @@ const Navbar = () => {
             </p>
           )}
 
+          {token && (
           <button
             className="cart-icon"
             onClick={() => handleNavigation("/cart")}
@@ -83,6 +84,8 @@ const Navbar = () => {
             <BiCart className="icon" />
             <span className="cart-qty">{getCartCount()}</span>
           </button>
+
+          )}
         </div>
       </nav>
     </div>
