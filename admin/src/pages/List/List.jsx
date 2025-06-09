@@ -235,6 +235,7 @@ const List = ({ token }) => {
               <input
                 id="edit-price"
                 type="number"
+                min="0"
                 value={editProduct.price}
                 onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
               />
@@ -245,6 +246,7 @@ const List = ({ token }) => {
               <input
                 id="edit-stock"
                 type="number"
+                min="0"
                 value={editProduct.stock}
                 onChange={(e) => setEditProduct({ ...editProduct, stock: e.target.value })}
               />

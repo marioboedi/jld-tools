@@ -121,6 +121,7 @@ const Add = ({ token }) => {
                     <p className="form-label">Product Price</p>
                     <input
                         type="number"
+                        min="0"
                         className="form-input price-input"
                         onChange={(e) => setPrice(e.target.value)}
                         value={price}
@@ -131,6 +132,7 @@ const Add = ({ token }) => {
                     <p className="form-label">Product Stock</p>
                     <input
                     type="number"
+                    min="0"
                     className="form-input stock-input"
                     onChange={(e) => setStock(e.target.value)}
                     value={stock}
