@@ -214,13 +214,21 @@ const List = ({ token }) => {
 
             <div className="form-group">
               <label htmlFor="edit-category">Category</label>
-              <input
+              <select
                 id="edit-category"
-                type="text"
                 value={editProduct.category}
                 onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
-              />
+              >
+                {uniqueCategories
+                  .filter((category) => category !== 'All')
+                  .map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+              </select>
             </div>
+
 
             <div className="form-group">
               <label htmlFor="edit-price">Price</label>
