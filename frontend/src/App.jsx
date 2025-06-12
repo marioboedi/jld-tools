@@ -7,7 +7,7 @@ import Checkout from './pages/Checkout/Checkout'
 import Order from './pages/Order/Order'
 import Footer from './components/Footer/Footer'
 import {Routes, Route} from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast as _toast } from 'react-toastify';
 import Verify from './pages/Verify'
 
 export const backendUrl = 'http://localhost:4000'
