@@ -42,3 +42,17 @@
   color: white;
   border-color: #007bff;
 }
+
+.view-proof-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #007bff; /* Warna biru seperti link */
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+.view-proof-button:hover {
+  color: #0056b3; /* Warna saat hover */
+}

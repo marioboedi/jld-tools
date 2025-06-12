@@ -2,7 +2,7 @@ import React from 'react'
 import './Sidebar.css'
 import { NavLink } from 'react-router-dom'
 import {IoIosLogOut, IoMdAddCircleOutline} from 'react-icons/io'
-import { MdAddShoppingCart, MdFormatListBulletedAdd, } from 'react-icons/md'
+import { MdAddShoppingCart, MdFormatListBulletedAdd, MdInsertChart } from 'react-icons/md'
 import jld_logo from '../../assets/jld-logo.png'
 
 const Sidebar = ({setToken}) => {
@@ -24,6 +24,11 @@ const Sidebar = ({setToken}) => {
           <MdAddShoppingCart className='sidebar-icon' />
           <p className="sidebar-text">Orders</p>
         </NavLink>
+        <NavLink to="/sales-report" className="sidebar-link">
+          <MdInsertChart className='sidebar-icon' />
+          <p className='sidebar-text'>Sales Report</p>
+        </NavLink>
+
         <button onClick={()=>setToken("")} className="sidebar-link">
           <IoIosLogOut className='sidebar-icon' />
           <p className="sidebar-text">Logout</p>

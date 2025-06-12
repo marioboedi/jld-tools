@@ -9,6 +9,7 @@ const List = ({ token }) => {
   const [list, setList] = useState([])
   const [editProduct, setEditProduct] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const productsPerPage = 10
 
@@ -61,6 +62,8 @@ const List = ({ token }) => {
       formData.append('price', editProduct.price)
       formData.append('category', editProduct.category)
       formData.append('description', editProduct.description)
+      formData.append('stock', editProduct.stock);
+
 
       if (editProduct.imageFile) {
         formData.append('image', editProduct.imageFile)
@@ -91,7 +94,10 @@ const List = ({ token }) => {
 
   // Filter category
   const uniqueCategories = ['All', ...new Set(list.map((item) => item.category))]
-  const filteredList = selectedCategory === 'All' ? list : list.filter((item) => item.category === selectedCategory)
+  const filteredList = list
+  .filter((item) => selectedCategory === 'All' || item.category === selectedCategory)
+  .filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+
 
   // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage
@@ -124,12 +130,31 @@ const List = ({ token }) => {
         </select>
       </div>
 
+      <div className="search-container">
+        <label htmlFor="product-search">Search Product: </label>
+        <input
+          type="text"
+          id="product-search"
+          placeholder="Enter product name..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value)
+            setCurrentPage(1) // Reset ke halaman 1 saat pencarian berubah
+          }}
+        />
+      </div>
+
+
+      <p className="product-count">Total Products: {filteredList.length}</p>
+
+
       <div className="product-list-container">
         <div className="product-table-title">
           <b>Image</b>
           <b>Name</b>
           <b>Category</b>
           <b>Price</b>
+          <b>Stock</b>
           <b className="action-title">Action</b>
         </div>
 
@@ -138,7 +163,8 @@ const List = ({ token }) => {
             <img src={item.image} alt="" className="product-image" />
             <p>{item.name}</p>
             <p>{item.category}</p>
-            <p>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price)}</p>
+            <p>{'Rp ' + item.price.toLocaleString('id-ID')}</p>
+            <p>{item.stock ?? '-'}</p> {/* Menampilkan stok atau "-" jika tidak tersedia */}
 
             <div className="product-actions">
               <MdEdit onClick={() => handleEditProduct(item)} className="product-action" />
@@ -166,41 +192,93 @@ const List = ({ token }) => {
 
       {/* ==== FORM EDIT PRODUCT ==== */}
       {editProduct && (
-        <div className="edit-form-container">
-          <h3>Edit Product</h3>
-          <input
-            type="text"
-            value={editProduct.name}
-            onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
-            placeholder="Name"
-          />
-          <input
-            type="text"
-            value={editProduct.category}
-            onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
-            placeholder="Category"
-          />
-          <input
-            type="number"
-            value={editProduct.price}
-            onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
-            placeholder="Price"
-          />
-          <textarea
-            value={editProduct.description}
-            onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
-            placeholder="Description"
-          />
-          <input
-            type="file"
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, imageFile: e.target.files[0] })
-            }
-          />
-          <button onClick={submitEditProduct}>Submit</button>
-          <button onClick={() => setEditProduct(null)}>Cancel</button>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <span
+              className="modal-close-button"
+              onClick={() => setEditProduct(null)}
+            >
+              &times;
+            </span>
+            <h2>Edit Product</h2>
+
+            <div className="form-group">
+              <label htmlFor="edit-name">Name</label>
+              <input
+                id="edit-name"
+                type="text"
+                value={editProduct.name}
+                onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-category">Category</label>
+              <select
+                id="edit-category"
+                value={editProduct.category}
+                onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
+              >
+                {uniqueCategories
+                  .filter((category) => category !== 'All')
+                  .map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+
+            <div className="form-group">
+              <label htmlFor="edit-price">Price</label>
+              <input
+                id="edit-price"
+                type="number"
+                min="0"
+                value={editProduct.price}
+                onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-stock">Stock</label>
+              <input
+                id="edit-stock"
+                type="number"
+                min="0"
+                value={editProduct.stock}
+                onChange={(e) => setEditProduct({ ...editProduct, stock: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-description">Description</label>
+              <textarea
+                id="edit-description"
+                value={editProduct.description}
+                onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="edit-image">Image</label>
+              <input
+                id="edit-image"
+                type="file"
+                onChange={(e) => setEditProduct({ ...editProduct, imageFile: e.target.files[0] })}
+              />
+            </div>
+
+            <div className="modal-buttons">
+              <button className="submit-button" onClick={submitEditProduct}>Submit</button>
+              {/* <button className="cancel-button" onClick={() => setEditProduct(null)}>Cancel</button> */}
+            </div>
+          </div>
         </div>
       )}
+
+
     </div>
   )
 }

@@ -1,61 +1,80 @@
-import React from 'react'
+import { useContext } from 'react';
+import { FoodContext } from '../../context/FoodContext';
 import './Hero.css'
-import hero_img from '../../assets/hero-image.png'
-import {FaShippingFast} from 'react-icons/fa'
-import {BiSupport} from 'react-icons/bi'
-import {MdPayment} from 'react-icons/md'
-import {FiSend} from 'react-icons/fi'
+import hero_img from '../../assets/jld-gedung.png'
+import { FaShippingFast, FaWhatsapp, FaUserCircle } from 'react-icons/fa'
+import { BiSupport } from 'react-icons/bi'
+import { MdPayment } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const { userName, token } = useContext(FoodContext)
+  const navigate = useNavigate();
+
+  const handleUserClick = () => {
+    if (!token) {
+      navigate('/login');
+    }
+  };
+
   return (
-    <div>
-      <div className="hero">
-        <div className="hero_top">
-          <div className="hero_left">
-            <h2>"Tools That Cut. Weld. Build."</h2>
-            <h1>EQUIP<br />BUILD<br />ACHIEVE </h1>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere, iure quaerat? Nihil voluptate velit nobis dolores provident </p>
-            <button>Explore Our Menu</button>
-          </div>
-          <div className="hero_right">
-            <img src={hero_img} alt="" className='hero-img' />
+    <section className="hero">
+
+      <div className="user_badge" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
+        <FaUserCircle className="user_icon" />
+        <span className="user_name">{userName ? userName.toUpperCase() : 'USER'}</span>
+      </div>
+
+      <div className="hero_image_full">
+        <img src={hero_img} alt="Hero" className="hero-img-full" />
+      </div>
+      <div className="hero_text">
+
+        <div className="hero_titles">
+          <span>EQUIP</span>
+          <span>-</span>
+          <span>BUILD</span>
+          <span>-</span>
+          <span>ACHIEVE</span>
+        </div>
+
+        <a 
+          href="https://wa.link/aobdev" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="whatsapp_button"
+        >
+          <FaWhatsapp className="wa_icon" />
+          Contact Us
+        </a>
+      </div>
+
+      <div className="features_grid">
+        <div className="feature_card">
+          <FaShippingFast className="feature_icon" />
+          <div>
+            <h3>Nationwide Shipping</h3>
+            <p>We deliver to every corner of Indonesia</p>
           </div>
         </div>
-        <div className="hero_bottom">
-          <div className="hero_content">
-            <div className="info_icon"><FaShippingFast className='hero_icon'/> </div>
-            <div className='detail'>
-              <h3>Free Shipping</h3>
-              <p>Free shipping on order</p>
-            </div>
-          </div>
 
-          <div className="hero_content">
-          <div className="info_icon"><FiSend className='hero_icon'/> </div>
-            <div className='detail'>
-              <h3>Wordwide Delivery</h3>
-              <p>We deliver to all countries</p>
-            </div>
+        <div className="feature_card">
+          <BiSupport className="feature_icon" />
+          <div>
+            <h3>Responsive Support</h3>
+            <p>Fast and helpful customer service</p>
           </div>
+        </div>
 
-          <div className="hero_content">
-          <div className="info_icon"><BiSupport className='hero_icon'/> </div>
-            <div className='detail'>
-              <h3>24/7 Support</h3>
-              <p>Full support on process</p>
-            </div>
-          </div>
-
-          <div className="hero_content">
-          <div className="info_icon"><MdPayment className='hero_icon'/> </div>
-            <div className='detail'>
-              <h3>Secure Payment</h3>
-              <p>Your payment is secure</p>
-            </div>
+        <div className="feature_card">
+          <MdPayment className="feature_icon" />
+          <div>
+            <h3>Trusted Quality</h3>
+            <p>Reliable and guaranteed products only</p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

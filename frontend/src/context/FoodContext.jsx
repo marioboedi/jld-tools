@@ -10,14 +10,16 @@ export const FoodContext = createContext()
 
 const FoodContextProvider = ({children}) => {
 
-    const delivery_fee = 12;
-    const currency = 'Rp.'
+    const delivery_fee = 12000;
+    const currency = 'Rp '
     console.log(backendUrl);
 
     
     const [products, setProducts] = useState(product)
     const [cartItems, setCartItems] = useState({})
     const [token, setToken] = useState('')
+    const [userName, setUserName] = useState('')
+
     const navigate = useNavigate()
 
     const addToCart = async(itemId) => {
@@ -114,10 +116,29 @@ const FoodContextProvider = ({children}) => {
             setToken(localStorage.getItem('token'));
             getUserCart(localStorage.getItem('token'))
         }
+        if (localStorage.getItem('name')) {
+            setUserName(localStorage.getItem('name'))
+        }
+
+        const storedToken = localStorage.getItem('token');
+        const storedName = localStorage.getItem('name');
+
+        if (storedToken) {
+            setToken(storedToken);
+            getUserCart(storedToken);
+        } else {
+            setToken('');
+            setUserName(''); // pastikan nama kosong saat tidak login
+        }
+
+        if (storedName) {
+            setUserName(storedName);
+        }
+
     },[])
 
     return (
-        <FoodContext.Provider value={{products, cartItems,setCartItems,getUserCart, navigate, currency, getCartAmount, addToCart, delivery_fee, getCartCount, updateQuantity, token, setToken}}>
+        <FoodContext.Provider value={{products, cartItems,setCartItems,getUserCart, navigate, currency, getCartAmount, addToCart, delivery_fee, getCartCount, updateQuantity, token, setToken, userName, setUserName}}>
             {children}
         </FoodContext.Provider>
     )

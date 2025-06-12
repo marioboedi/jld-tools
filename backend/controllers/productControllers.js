@@ -3,26 +3,31 @@ import {v2 as cloudinary} from 'cloudinary'
 
 const addProduct = async(req,res) => {
     try {
-        const {name, price, description, category} = req.body
-
+        const {name, price, description, category, stock} = req.body
         const image = req.file;
-        // let imageUrl = "";
-
-        // if(image){
-        //     let result = await cloudinary.uploader.upload(image.path, {resource_type: 'image'})
-        //     imageUrl = result.secure_url
-        // } else{
-        //     imageUrl = "https://via.placeholder.com/150"
-        // }
-
         if(!image){
             return res.json({success:false, message: "Please upload an image"})
+        }
+
+        // Validasi harga tidak boleh nol
+        if (Number(price) <= 0) {
+            return res.json({ success: false, message: "Harga produk tidak boleh Rp 0" });
+        }
+
+        // Cek apakah nama produk sudah ada
+        const existingProduct = await productModel.findOne({ name });
+        if (existingProduct) {
+            return res.json({ success: false, message: "Produk dengan nama yang sama sudah ada" });
         }
 
         let result = await cloudinary.uploader.upload(image.path, {resource_type: 'image'})
 
         const productData = {
-            name, description, category, price: Number(price),
+            name, 
+            description, 
+            category, 
+            price: Number(price),
+            stock: Number(stock),
             // image: imageUrl,
             image: result.secure_url,
             date: Date.now()
@@ -86,13 +91,34 @@ const singleProduct = async(req,res)=> {
 
 const updateProduct = async (req, res) => {
     try {
-        const { _id, name, description, category, price } = req.body;
+        const { _id, name, description, category, price, stock } = req.body;
+
+        if (!name) {
+            return res.json({ success: false, message: "Nama tidak boleh kosong" });
+        }
+
+        if (!description) {
+            return res.json({ success: false, message: "Deskripsi tidak boleh kosong" });
+        }
+
+
+        // Validasi harga tidak boleh 0
+        if (Number(price) <= 0) {
+        return res.json({ success: false, message: "Harga produk tidak boleh Rp 0" });
+        }
+
+        // Cek apakah nama produk yang baru sama dengan produk lain (tidak termasuk dirinya sendiri)
+        const existingProduct = await productModel.findOne({ name, _id: { $ne: _id } });
+        if (existingProduct) {
+        return res.json({ success: false, message: "Produk dengan nama yang sama sudah ada" });
+        }
 
         const updateData = {
             name,
             description,
             category,
             price: Number(price),
+            stock: Number(stock),
         };
 
         if (req.file) {

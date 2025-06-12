@@ -50,7 +50,11 @@ const updateCart = async(req,res)=>{
 
         let cartData = await userData.cartData
 
-        cartData[itemId] = quantity
+         if (quantity === 0) {
+            delete cartData[itemId]; // Hapus item dari cart
+          } else {
+            cartData[itemId] = quantity;
+          }
 
         await userModel.findByIdAndUpdate(userId, {cartData})
 

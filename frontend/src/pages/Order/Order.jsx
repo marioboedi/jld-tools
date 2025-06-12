@@ -1,86 +1,117 @@
-import React, { useContext, useEffect, useState } from 'react'
-import {FoodContext} from '../../context/FoodContext'
-import axios from 'axios'
-import { backendUrl } from '../../App'
-import './Order.css'
+import React, { useContext, useEffect, useState } from "react";
+import { FoodContext } from "../../context/FoodContext";
+import axios from "axios";
+import { backendUrl } from "../../App";
+import "./Order.css";
 
 const Order = () => {
-  const {token, currency} = useContext(FoodContext)
+  const { token, currency } = useContext(FoodContext);
 
-  const [orderData, setOrderData] = useState([])
+  const [orderData, setOrderData] = useState([]);
+  const [sortOrder, setSortOrder] = useState("desc"); // desc = terbaru
+  const [filterDate, setFilterDate] = useState("");
 
-  const loadOrderData = async()=>{
+  const loadOrderData = async () => {
     try {
-      if(!token){
-        return null
-      }
+      if (!token) return;
 
-      const response = await axios.post(backendUrl + '/api/order/userorders', {}, {headers: {token}})
-      if(response.data.success){
-        let allOrdersItem = []
+      const response = await axios.post(
+        backendUrl + "/api/order/userorders",
+        {},
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        let orders = response.data.orders;
 
-        response.data.orders.map((order)=> {
-          order.items.map((item)=> {
-            item['status'] = order.status;
-            item['payment'] = order.payment;
-            item['paymentMethod'] = order.paymentMethod;
-            item['date'] = order.date
+        // Filter berdasarkan tanggal
+        if (filterDate) {
+          orders = orders.filter(
+            (order) =>
+              new Date(order.date).toLocaleDateString() ===
+              new Date(filterDate).toLocaleDateString()
+          );
+        }
 
-            allOrdersItem.push(item)
+        // Urutkan berdasarkan tanggal
+        orders.sort((a, b) =>
+          sortOrder === "desc"
+            ? new Date(b.date) - new Date(a.date)
+            : new Date(a.date) - new Date(b.date)
+        );
 
-          })
-        })
-        console.log(response.data);
-        setOrderData(allOrdersItem.reverse())
-        
+        setOrderData(orders);
       }
     } catch (error) {
       console.log(error);
-      
-      
     }
-  }
+  };
 
-  useEffect(()=> {
-    loadOrderData()
-  },[token])
+  useEffect(() => {
+    loadOrderData();
+  }, [token, sortOrder, filterDate]);
   return (
     <div>
       <div className="order-container">
+        <div className="order-filter">
+          <label>Sort by: </label>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+          >
+            <option value="desc">Terbaru</option>
+            <option value="asc">Terlama</option>
+          </select>
+
+          <label>Filter by Date: </label>
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+          />
+          {/* <button onClick={loadOrderData}>Apply Filter</button> */}
+        </div>
+
         <div className="order-title">
           <h1>My Orders</h1>
         </div>
         <div>
-          {
-            orderData.map((item, index)=> (
-              <div className='order-item-container' key={index}>
-                <div className="order-item-details">
-                  <img src={item.image} alt="" className='order-item-image' />
-                  <div>
-                    <p className="order-item-name">{item.name} </p>
-                    <div className="order-item-info">
-                      <p>{currency}{item.price} </p>
-                      <p>Quantity: {item.quantity} </p>
+          {orderData.map((order, orderIndex) => (
+            <div className="order-container-group" key={orderIndex}>
+              <h3>Order Date: {new Date(order.date).toLocaleString()}</h3>
+              <p>
+                Payment: {order.paymentMethod} -{" "}
+                {order.payment ? "Done" : "Pending"}
+              </p>
+              <p>Status: {order.status}</p>
+              <div className="order-item-list">
+                {order.items.map((item, itemIndex) => (
+                  <div className="order-item-container" key={itemIndex}>
+                    <div className="order-item-details">
+                      <img
+                        src={item.image}
+                        alt=""
+                        className="order-item-image"
+                      />
+                      <div>
+                        <p className="order-item-name">{item.name} </p>
+                        <div className="order-item-info">
+                          <p>
+                            {currency}
+                            {item.price.toLocaleString('id-ID')}
+                          </p>
+                          <p>Quantity: {item.quantity}</p>
+                        </div>
+                      </div>
                     </div>
-                    <p className='order-item-date'>Date: <span>{new Date(item.date).toLocaleString()}</span> </p>
-                    <p className='order-item-payment'>Payment: <span>{item.paymentMethod} </span> </p>
                   </div>
-                </div>
-                <div className="order-item-status-container">
-                  <div className="order-item-status">
-                    <p className="status-indicator"></p>
-                    <p>{item.status} </p>
-                  </div>
-                  <button onClick={loadOrderData} className='track-order-btn'> Track Order</button>
-                </div>
-
+                ))}
               </div>
-            ))
-          }
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Order
+export default Order;

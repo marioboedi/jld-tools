@@ -9,7 +9,7 @@ const Login = () => {
 
   const [currentState, setCurrentState] = useState('Login')
 
-  const {token, setToken, navigate} = useContext(FoodContext)
+  const {token, setToken, navigate, setUserName} = useContext(FoodContext)
 
   const [name, setName]= useState('')
   const [email, setEmail]= useState('')
@@ -25,6 +25,9 @@ const Login = () => {
           setToken(response.data.token)
           toast.success(response.data.message)
           localStorage.setItem('token', response.data.token)
+          localStorage.setItem('name', response.data.name || name)
+          setUserName(response.data.name || 'User')
+
 
         } else {
           toast.error(response.data.message)
@@ -36,6 +39,10 @@ const Login = () => {
           setToken(response.data.token)
           toast.success(response.data.message)
           localStorage.setItem('token', response.data.token)
+          localStorage.setItem('name', response.data.name || 'User')
+          setUserName(response.data.name || 'User')
+
+          
         } else{
           toast.error(response.data.message)
         }
@@ -69,7 +76,7 @@ const Login = () => {
         <input type="email" onChange={(e)=> setEmail(e.target.value)} value={email} className='form-input' placeholder='Email' required/>
         <input type="password" onChange={(e)=> setPassword(e.target.value)} value={password} className='form-input' placeholder='Password' required/>
         <div className="form-footer">
-          <p className='fgt-paddword'>Forget Password ?</p>
+          {/* <p className='fgt-paddword'>Forget Password ?</p> */}
           {
             currentState === 'Login' ? (<p className='toggle-auth-state' onClick={()=> setCurrentState('Sign Up')}>Create Account</p>) :
              (<p className='toggle-auth-state' onClick={()=> setCurrentState('Login')}>Login Here </p>)

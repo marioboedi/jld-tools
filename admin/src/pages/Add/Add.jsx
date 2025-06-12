@@ -10,7 +10,9 @@ const Add = ({ token }) => {
     const [name, setName] = useState("");  // Stores the product name
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
-    const [category, setCategory] = useState("All"); // Stores the selected category, defaulting to "All"
+    const [category, setCategory] = useState("Cordless Drill"); // Stores the selected category, defaulting to "All"
+    const [stock, setStock] = useState(""); // Tambahkan ini
+
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();  // Prevents the default form submission behavior
@@ -22,6 +24,8 @@ const Add = ({ token }) => {
             formData.append("description", description);
             formData.append("price", price);
             formData.append("category", category);
+            formData.append("stock", stock); // Tambahkan ini
+
             if (image) formData.append("image", image);  // Add image only if selected
 
             // Send a POST request to add the product
@@ -37,6 +41,7 @@ const Add = ({ token }) => {
                 setDescription("");
                 setPrice("");
                 setImage(null);
+                setStock("");
             } else {
                 toast.error(response.data.message);
             }
@@ -98,7 +103,6 @@ const Add = ({ token }) => {
                         value={category}
                         className="form-select"
                     >
-                        <option value="All">All</option>
                         <option value="Cordless Drill">Cordless Drill</option>
                         <option value="Impact Driver">Impact Driver</option>
                         <option value="Electric Hand Saw">Electric Hand Saw</option>
@@ -108,16 +112,31 @@ const Add = ({ token }) => {
                         <option value="Lawn Mover">Lawn Mover</option>
                         <option value="Lithium Electric Drill">Lithium Electric Drill</option>
                         <option value="Circular Saw">Circular Saw</option>
+                        <option value="Hand Tools">Hand Tools</option>
+                        <option value="Others">Others</option>
                     </select>
                 </div>
                 <div>
                     <p className="form-label">Product Price</p>
                     <input
                         type="number"
+                        min="0"
                         className="form-input price-input"
                         onChange={(e) => setPrice(e.target.value)}
                         value={price}
                         placeholder="30"
+                    />
+                </div>
+                <div>
+                    <p className="form-label">Product Stock</p>
+                    <input
+                    type="number"
+                    min="0"
+                    className="form-input stock-input"
+                    onChange={(e) => setStock(e.target.value)}
+                    value={stock}
+                    placeholder="10"
+                    required
                     />
                 </div>
             </div>
