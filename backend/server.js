@@ -24,6 +24,13 @@ app.use('/api/product', productRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://jld-tools-user.vercel.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
+
 app.get('/', (req,res)=> {
     res.send("API Working")
 })
