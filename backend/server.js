@@ -16,7 +16,7 @@ connectCloudinary()
 
 app.use(express.json())
 app.use(cors({
-  origin: ['https://jld-tools-user.vercel.app/', 'https://jld-tools-admin.vercel.app/'],
+  origin: ['https://jld-tools-user.vercel.app', 'https://jld-tools-admin.vercel.app'],
   credentials: true
 }))
 app.use('/api/user', userRouter)

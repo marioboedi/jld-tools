@@ -9,7 +9,7 @@ import Login from "./components/Login/Login";
 import { ToastContainer, toast as _toast } from "react-toastify";
 
 
-export const backendUrl = "https://jld-tools-api.vercel.app/"
+export const backendUrl = "https://jld-tools-api.vercel.app"
 export const currency = "Rp."
 
 const App = () => {
