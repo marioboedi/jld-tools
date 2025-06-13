@@ -10,7 +10,7 @@ import {Routes, Route} from 'react-router-dom'
 import { ToastContainer, toast as _toast } from 'react-toastify';
 import Verify from './pages/Verify'
 
-export const backendUrl = 'http://localhost:4000'
+export const backendUrl = 'https://jld-tools-api.vercel.app/'
 
 const App = () => {
   return (
