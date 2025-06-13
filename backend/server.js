@@ -25,10 +25,18 @@ app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://jld-tools-user.vercel.app");
+  const allowedOrigins = [
+    'https://jld-tools-user.vercel.app',
+    'https://jld-tools-admin.vercel.app'
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
   res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
+
 
 
 app.get('/', (req,res)=> {
